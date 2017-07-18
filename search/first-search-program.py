@@ -35,51 +35,48 @@ delta_name = ['^', '<', 'v', '>']
 
 
 
-def expand(pos):
-    n_row = len(grid)
-    n_col = len(grid[0])
-
-    x = pos[1]
-    y = pos[2]
-
-    g_val = pos[0] + 1
-    
-    expand_list = []
-    for i in delta:
-        x_ = i[0] + x
-        y_ = i[1] + y
-        #if are between the bounds of the map
-        if (x_>=0 and x_<n_row and y_>=0 and y_<n_col):
-            value = grid[x_][y_]
-            if (value != 1 and value != -1):
-                expand_list.append([g_val, x_, y_])
-                grid[x_][y_] = -1 #mark as value already taken
-
-    return expand_list
-
-def smallest(open_list):
-    lowest_value = 100000
-    i_lowest_value = -1
-    i = 0
-    for element in open_list:
-        print
-        if element[0] < lowest_value:
-            lowest_value = element[0]
-            i_lowest_value = i
-        i += 1
-
-    
-    if i_lowest_value != -1:
-        return i_lowest_value
-    else:
-        print("fail")
-        sys.exit(0)
-
-
 def search(grid,init,goal,cost):
     # ----------------------------------------
     # insert code here
     # ----------------------------------------
+
+    def smallest(open_list):
+    	# This function recive an open list and return the index of the 
+    	# element with the lowest g-value
+		lowest_value = 100000
+		i_lowest_value = -1
+		i = 0
+		for element in open_list:
+			if element[0] < lowest_value:
+				lowest_value = element[0]
+	    		i_lowest_value = i
+	    	i += 1
+
+		if i_lowest_value != -1:
+			return i_lowest_value
+		else:
+			print("fail")
+	        sys.exit(0)
+
+    def expand(pos):
+    	# This function recieve an elemet pos and return the neighbors that are
+    	# not yet used. Each of the elemt used are set to -1 on the grid
+    	n_row = len(grid)
+    	n_col = len(grid[0])
+    	x = pos[1]
+    	y = pos[2]
+    	g_val = pos[0] + 1
+    	expand_list = []
+    	for i in delta:
+	        x_ = i[0] + x
+	        y_ = i[1] + y
+	        #if are between the bounds of the map
+	        if (x_>=0 and x_<n_row and y_>=0 and y_<n_col):
+	            value = grid[x_][y_]
+	            if (value != 1 and value != -1):
+	                expand_list.append([g_val, x_, y_])
+	                grid[x_][y_] = -1 #mark as value already taken
+      	return expand_list
 
     # intitialization
     grid[init[0]][init[1]] = -1
@@ -104,8 +101,7 @@ def search(grid,init,goal,cost):
         open_list += expand(list_item)
         #print(open_list)
 
-
     return list_item
 
 
-print(search(init, goal, cost))
+print(search(grid, init, goal, cost))
