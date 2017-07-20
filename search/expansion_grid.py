@@ -33,10 +33,9 @@ def search(grid,init,goal,cost):
     closed = [[0 for row in range(len(grid[0]))] for col in range(len(grid))]
     closed[init[0]][init[1]] = 1
 
-    # init with -1 all elements except the initial position
-    track_value = 0
+    # init with -1 all elements    
     expand = [[-1 for row in range(len(grid[0]))] for col in range(len(grid))]
-    expand[init[0]][init[1]] = track_value
+    track_value = 0
 
     x = init[0]
     y = init[1]
@@ -58,6 +57,10 @@ def search(grid,init,goal,cost):
             y = next[2]
             g = next[0]
             
+            # fill the table at x,y with its value
+            expand[x][y] = track_value
+            track_value += 1
+
             if x == goal[0] and y == goal[1]:
                 found = True
             else:
