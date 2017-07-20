@@ -7,5 +7,6 @@ My quizzes solutions that involve make some code in this term of the nanodegree.
 This section is about discrete path planning and algorithms for solving the path planning problem.
 
 * [First Search Program](search/first-search-program.py). 
+* [Expansion Grid](search/expansion_grid.py).
 
 
