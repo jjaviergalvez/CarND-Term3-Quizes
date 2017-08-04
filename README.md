@@ -9,5 +9,6 @@ This section is about discrete path planning and algorithms for solving the path
 * [First Search Program](search/first-search-program.py). 
 * [Expansion Grid](search/expansion_grid.py).
 * [Print Path with Directions](search/print-path.py).
+* [Implement A* Algorithm](search/A-start.py).
 
 
