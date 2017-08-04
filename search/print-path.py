@@ -41,13 +41,16 @@ def search(grid,init,goal,cost):
     closed = [[0 for row in range(len(grid[0]))] for col in range(len(grid))]
     closed[init[0]][init[1]] = 1
 
-    expand = [[' ' for row in range(len(grid[0]))] for col in range(len(grid))] 
+    g_grid = [[' ' for row in range(len(grid[0]))] for col in range(len(grid))] #fill with g values 
+    expand = [[' ' for row in range(len(grid[0]))] for col in range(len(grid))]
 
     x = init[0]
     y = init[1]
     g = 0
 
-    open = [[g, x, y]]
+    g_grid[x][y] = g
+
+    open = [[g, x, y]] 
 
     found = False  # flag that is set when search is complete
     resign = False # flag set if we can't find expand
@@ -73,11 +76,21 @@ def search(grid,init,goal,cost):
                     y2 = y + delta[i][1]
                     if x2 >= 0 and x2 < len(grid) and y2 >=0 and y2 < len(grid[0]):
                         if closed[x2][y2] == 0 and grid[x2][y2] == 0:
-                            
-                            expand[x][y] = delta_name[i]
                             g2 = g + cost
+                            g_grid[x2][y2] = g2
                             open.append([g2, x2, y2])
                             closed[x2][y2] = 1
+
+    for n in range(g2, -1, -1):
+        for i in range(len(delta)):
+            x2 = x + delta[i][0]
+            y2 = y + delta[i][1]
+            if x2 >= 0 and x2 < len(grid) and y2 >=0 and y2 < len(grid[0]):
+                if g_grid[x2][y2] == (n-1):
+                    expand[x2][y2] = delta_name[(i+2)%4]
+                    x = x2
+                    y = y2
+
 
     return expand # make sure you return the shortest path
 
