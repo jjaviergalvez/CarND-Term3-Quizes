@@ -10,5 +10,6 @@ This section is about discrete path planning and algorithms for solving the path
 * [Expansion Grid](search/expansion_grid.py).
 * [Print Path with Directions](search/print-path.py).
 * [Implement A* Algorithm](search/A-start.py).
+* [Value program](search/value.py).
 
 
