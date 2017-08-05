@@ -11,5 +11,6 @@ This section is about discrete path planning and algorithms for solving the path
 * [Print Path with Directions](search/print-path.py).
 * [Implement A* Algorithm](search/A-start.py).
 * [Value program](search/value.py).
+* [Optimum Policy](search/optimum_policy.py).
 
 
