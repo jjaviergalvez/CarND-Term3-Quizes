@@ -12,5 +12,6 @@ This section is about discrete path planning and algorithms for solving the path
 * [Implement A* Algorithm](search/A-start.py).
 * [Value program](search/value.py).
 * [Optimum Policy](search/optimum_policy.py).
+* Left Turn Policy. [My incomplete solution](search/left-turn-policy.py) and the [Sebastian's soluction](search/sebastian_solution).
 
 
