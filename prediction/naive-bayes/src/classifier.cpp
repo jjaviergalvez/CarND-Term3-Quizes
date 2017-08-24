@@ -92,8 +92,30 @@ string GNB::predict(vector<double> sample)
 		"""
 		# TODO - complete this
 	*/
-	
 
-	return this->possible_labels[1];
+
+	vector<double> posterior(possible_labels.size());
+
+	// calculate the posteriori for belong to each class
+	for(int i = 0; i < possible_labels.size(); i++){
+		posterior[i] = 0.33;
+		for(int j = 0; j < sample.size(); j++){
+			double x = sample[j];
+			double gauss = exp(-pow(x - mean_[i][j], 2) / (2*var_[i][j])) / sqrt(2*M_PI*var_[i][j]);
+			posterior[i] *= gauss;
+		}
+	}
+
+	// take the maximum
+	double max = 0;
+	int r = 0;
+	for(int i = 0; i < possible_labels.size(); i++){
+		if(posterior[i] > max){
+			max = posterior[i];
+			r = i;
+		}
+	}
+
+	return this->possible_labels[r];
 
 }
