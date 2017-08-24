@@ -4,6 +4,7 @@
 #include <math.h>
 #include <vector>
 #include "classifier.h"
+#include <numeric>
 
 /**
  * Initializes GNB
@@ -38,31 +39,30 @@ void GNB::train(vector<vector<double>> data, vector<string> labels)
 	int m = data.size(); // number of instances
 	int k = possible_labels.size(); // number of classes
 
-	double mean[3][n]; // to store the means 
-	double var[3][n]; // to store the variances
+	double mean[k][n]; // to store the means 
+	double var[k][n]; // to store the variances
 
 	// Separate data by class
 	// separated[0] will contain all the instances for left turn
 	// separated[1] will contain all the instances for keep going
 	// separated[2] will contain all the instances for right turn
 	vector< vector< vector<double >>> separated (k);
-
 	for(int i = 0; i < m; i++)
 		for(int j = 0; j < k; j++)
 			if(labels[i] == possible_labels[j])
     			separated[j].push_back(data[i]);
 
-    
+    // Calculate Mean
+    int sum;
+    for(int ik = 0; ik < k; ik++){
+    	for(int in = 0; in < n; in++){
+			for(int im = 0; im < separated[ik].size(); im++){
+				mean[ik][in] += separated[ik][im][in];
+			}
+			mean[ik][in] /= separated[ik].size();
+		}
+    }
 
-    cout << "data: " << separated[0][0][3] << endl;
-    cout << "data: " << separated[0][1][3] << endl;
-
-    cout << "data: " << separated[1][0][3] << endl;
-    cout << "data: " << separated[1][1][3] << endl;
-
-    cout << "data: " << separated[2][0][3] << endl;
-    cout << "data: " << separated[2][1][3] << endl;
-    	
 }
 
 string GNB::predict(vector<double> sample)
