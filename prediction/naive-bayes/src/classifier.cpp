@@ -39,8 +39,9 @@ void GNB::train(vector<vector<double>> data, vector<string> labels)
 	int m = data.size(); // number of instances
 	int k = possible_labels.size(); // number of classes
 
-	mean_.resize(k, vector<double>(n)); // n col and k row
-	var_.resize(k, vector<double>(n)); // n col and k row
+	mean_.resize(k, vector<double>(n)); // table to save the means
+	var_.resize(k, vector<double>(n)); // table to save the variance
+	prior_.resize(k); //the prior prob
 
 	// Separate data by class
 	// separated[0] will contain all the instances for left turn
@@ -51,6 +52,11 @@ void GNB::train(vector<vector<double>> data, vector<string> labels)
 		for(int j = 0; j < k; j++)
 			if(labels[i] == possible_labels[j])
     			separated[j].push_back(data[i]);
+
+    // calculate the prior probabilities
+    for(int i = 0; i < k; i++){
+		prior_[i] = separated[i].size() / double(m);
+	}
 
     // Calculate Mean
     for(int ik = 0; ik < k; ik++){
@@ -98,7 +104,7 @@ string GNB::predict(vector<double> sample)
 
 	// calculate the posteriori for belong to each class
 	for(int i = 0; i < possible_labels.size(); i++){
-		posterior[i] = 0.33;
+		posterior[i] = prior_[i];
 		for(int j = 0; j < sample.size(); j++){
 			double x = sample[j];
 			double gauss = exp(-pow(x - mean_[i][j], 2) / (2*var_[i][j])) / sqrt(2*M_PI*var_[i][j]);

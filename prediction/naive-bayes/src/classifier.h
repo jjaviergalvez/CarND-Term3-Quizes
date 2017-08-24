@@ -32,6 +32,7 @@ private:
 
 	vector<vector<double> > mean_;
 	vector<vector<double> > var_;
+	vector<double> prior_;
 
 };
 
