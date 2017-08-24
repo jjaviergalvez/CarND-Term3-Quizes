@@ -53,13 +53,22 @@ void GNB::train(vector<vector<double>> data, vector<string> labels)
     			separated[j].push_back(data[i]);
 
     // Calculate Mean
-    int sum;
     for(int ik = 0; ik < k; ik++){
     	for(int in = 0; in < n; in++){
 			for(int im = 0; im < separated[ik].size(); im++){
 				mean[ik][in] += separated[ik][im][in];
 			}
 			mean[ik][in] /= separated[ik].size();
+		}
+    }
+
+    // Calculate the variance
+    for(int ik = 0; ik < k; ik++){
+    	for(int in = 0; in < n; in++){
+			for(int im = 0; im < separated[ik].size(); im++){
+				var[ik][in] += pow(separated[ik][im][in] - mean[ik][in], 2);
+			}
+			var[ik][in] /= separated[ik].size();
 		}
     }
 
