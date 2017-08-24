@@ -39,8 +39,8 @@ void GNB::train(vector<vector<double>> data, vector<string> labels)
 	int m = data.size(); // number of instances
 	int k = possible_labels.size(); // number of classes
 
-	double mean[k][n]; // to store the means 
-	double var[k][n]; // to store the variances
+	mean_.resize(k, vector<double>(n)); // n col and k row
+	var_.resize(k, vector<double>(n)); // n col and k row
 
 	// Separate data by class
 	// separated[0] will contain all the instances for left turn
@@ -56,9 +56,9 @@ void GNB::train(vector<vector<double>> data, vector<string> labels)
     for(int ik = 0; ik < k; ik++){
     	for(int in = 0; in < n; in++){
 			for(int im = 0; im < separated[ik].size(); im++){
-				mean[ik][in] += separated[ik][im][in];
+				mean_[ik][in] += separated[ik][im][in];
 			}
-			mean[ik][in] /= separated[ik].size();
+			mean_[ik][in] /= separated[ik].size();
 		}
     }
 
@@ -66,9 +66,9 @@ void GNB::train(vector<vector<double>> data, vector<string> labels)
     for(int ik = 0; ik < k; ik++){
     	for(int in = 0; in < n; in++){
 			for(int im = 0; im < separated[ik].size(); im++){
-				var[ik][in] += pow(separated[ik][im][in] - mean[ik][in], 2);
+				var_[ik][in] += pow(separated[ik][im][in] - mean_[ik][in], 2);
 			}
-			var[ik][in] /= separated[ik].size();
+			var_[ik][in] /= separated[ik].size();
 		}
     }
 
@@ -92,6 +92,7 @@ string GNB::predict(vector<double> sample)
 		"""
 		# TODO - complete this
 	*/
+	
 
 	return this->possible_labels[1];
 
