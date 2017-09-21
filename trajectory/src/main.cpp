@@ -35,7 +35,29 @@ vector<double> JMT(vector< double> start, vector <double> end, double T)
     > JMT( [0, 10, 0], [10, 10, 0], 1)
     [0.0, 10.0, 0.0, 0.0, 0.0, 0.0]
     */
-    return {1,2,3,4,5,6};
+    MatrixXd A(3,3);
+	VectorXd b(3);
+
+	double si = start[0];
+	double si_dot = start[1];
+	double si_double_dot = start[2];
+
+	double sf = end[0];
+	double sf_dot = end[1];
+	double sf_double_dot = end[2];
+
+
+	A << pow(T,3)  , pow(T,4)   ,  pow(T,5),
+		 3*pow(T,2), 4*pow(T,3) ,  5*pow(T,4),
+		 6*T 	   , 12*pow(T,2), 20*pow(T,3);
+
+	b << sf - (si + si_dot*T + 0.5 * si_double_dot * pow(T,2) ), 
+		 sf_dot - (si_dot + si_double_dot*T), 
+		 sf_double_dot - si_double_dot;
+
+	VectorXd x = A.colPivHouseholderQr().solve(b);
+
+    return {si, si_dot, 0.5*si_double_dot, x[0], x[1], x[2]};
     
 }
 
