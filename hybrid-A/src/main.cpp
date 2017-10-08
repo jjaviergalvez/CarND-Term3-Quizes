@@ -33,6 +33,25 @@ vector< vector<int> > MAZE = {
     {X,X,X,_,_,_,_,_,_,_,_,_,_,_,_,_,},
 };
 
+/*
+vector< vector<int> > MAZE = {
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+    {_,X,X,_,_,_,_,_,_,_,X,X,_,_,_,},
+};
+*/
 
 vector< vector<int> > GRID = MAZE;
 
@@ -44,6 +63,8 @@ int main() {
   cout << "Finding path through grid:" << endl;
   
   // TODO:: Create an Empty Maze and try testing the number of expansions with it
+
+  cout << GRID.size()<<"x"<<GRID[0].size()<<endl;
   
   for(int i = 0; i < GRID.size(); i++)
   {
@@ -55,12 +76,13 @@ int main() {
     cout << endl;
   }
 
+
   HBF hbf = HBF();
 
   HBF::maze_path get_path = hbf.search(GRID,START,GOAL);
 
   vector<HBF::maze_s> show_path = hbf.reconstruct_path(get_path.came_from, START, get_path.final);
-
+  
   cout << "show path from start to finish" << endl;
   for(int i = show_path.size()-1; i >= 0; i--)
   {
@@ -72,6 +94,7 @@ int main() {
       cout << "theta " << step.theta << endl;
 
   }
+  
   
   return 0;
 }

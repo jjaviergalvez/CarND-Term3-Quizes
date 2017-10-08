@@ -11,9 +11,19 @@
 #include <iterator>
 
 using namespace std;
-
+  
 class Vehicle {
+
+
 public:
+
+  struct Snapshot{
+    int lane;
+    int s;
+    int v;
+    int a;
+    string state;
+  };
 
   struct collider{
 
@@ -58,11 +68,24 @@ public:
 
   void update_state(map<int, vector <vector<int> > > predictions);
 
+  string _get_next_state(map<int,vector < vector<int> > > predictions);
+
+  vector<Snapshot> _trajectory_for_state(string state, map<int, vector<vector<int>> > predictions, int horizon = 5);
+
+  Snapshot snapshot();
+
+  void restore_state_from_snapshot(Snapshot s);
+
+
+
+
+
+
   void configure(vector<int> road_data);
 
   string display();
 
-  void increment(int dt);
+  void increment(int dt = 1);
 
   vector<int> state_at(int t);
 

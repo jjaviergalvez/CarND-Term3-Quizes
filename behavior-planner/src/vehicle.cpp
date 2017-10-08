@@ -5,7 +5,9 @@
 #include <map>
 #include <string>
 #include <iterator>
+#include <cassert>
 
+#include "cost_functions.cpp"
 /**
  * Initializes Vehicle
  */
@@ -57,10 +59,89 @@ void Vehicle::update_state(map<int,vector < vector<int> > > predictions) {
     }
 
     */
+    
+    
+    cout << "enter to continue \n";
+    cin.ignore();
+
     state = "KL"; // this is an example of how you change state.
+    
 
 
 }
+
+string Vehicle::_get_next_state(map<int, vector<vector<int>> > predictions){
+    vector<string> states = {"KL", "LCL", "LCR"};
+    if(this->lane == 0)
+        states.erase(states.begin() + 1); // remove LCL
+    
+    if(this->lane == (this->lanes_available -1) )
+        states.erase(states.end()); // remove LCR
+    
+    map<string, double> costs;
+    for(const auto& state:states){
+        vector<Vehicle::Snapshot> trajectory = this->_trajectory_for_state(state, predictions);
+        // TODO
+        double cost = calculate_cost(*this, trajectory, predictions);
+        costs.insert( {state, cost} );
+    }
+
+
+    // TODO
+    //best = min(costs, key=lambda s: s['cost'])
+    //return best['state']
+
+}
+
+vector<Vehicle::Snapshot> Vehicle::_trajectory_for_state(string state, map<int, vector<vector<int>> > predictions, int horizon){
+    // remember current state
+    Vehicle::Snapshot snapshot = this->snapshot();
+
+    // pretend to be in new proposed state
+    this->state = state;
+    vector<Vehicle::Snapshot> trajectory = {snapshot};
+
+    for(int i = 0; i < horizon; i++){
+        this->restore_state_from_snapshot(snapshot);
+        this->state = state;
+        this->realize_state(predictions);
+        assert(0 <= this->lane < this->lanes_available);
+        this->increment();
+        trajectory.push_back(this->snapshot());
+
+        // need to remove first prediction for each vehicle.
+        for(auto& v:predictions){
+            v.second.erase(v.second.begin());
+        }
+    }
+
+    // restore state from snapshot
+    this->restore_state_from_snapshot(snapshot);
+    
+    return trajectory;
+}
+
+Vehicle::Snapshot Vehicle::snapshot(){
+    Vehicle::Snapshot snap;
+    
+    snap.lane  = this->lane;
+    snap.s     = this->s;
+    snap.v     = this->v;
+    snap.a     = this->a;
+    snap.state = this->state;
+
+    return snap;
+}
+
+
+void Vehicle::restore_state_from_snapshot(Vehicle::Snapshot s){
+    this->lane  = s.lane;
+    this->s     = s.s;
+    this->v     = s.v;
+    this->a     = s.a;
+    this->state = s.state;
+}
+    
 
 void Vehicle::configure(vector<int> road_data) {
 	/*
@@ -86,7 +167,7 @@ string Vehicle::display() {
     return oss.str();
 }
 
-void Vehicle::increment(int dt = 1) {
+void Vehicle::increment(int dt) {
 
 	this->s += this->v * dt;
     this->v += this->a * dt;
